@@ -1,0 +1,4 @@
+project_id = "spdxielollfytfvsfwia"
+
+[functions.generate-story]
+verify_jwt = false
