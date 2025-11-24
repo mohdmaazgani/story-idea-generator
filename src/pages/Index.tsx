@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2, Feather } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -73,69 +73,71 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-accent to-background">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto space-y-8">
-          {/* Header */}
-          <div className="text-center space-y-4 animate-fade-in">
-            <div className="flex items-center justify-center gap-2">
-              <Sparkles className="w-8 h-8 text-primary" />
-              <h1 className="text-5xl md:text-6xl font-bold text-foreground">
-                Story Idea Generator
-              </h1>
+    <div className="min-h-screen bg-gradient-to-br from-[hsl(30,25%,88%)] via-[hsl(35,30%,85%)] to-[hsl(25,30%,82%)] py-8 px-4">
+      <div className="container mx-auto max-w-4xl">
+        <div className="space-y-8">
+          {/* Vintage Letter Header */}
+          <div className="text-center space-y-6 animate-fade-in">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Feather className="w-10 h-10 text-primary" strokeWidth={1.5} />
             </div>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Transform your creative vision into captivating story prompts. Select your preferences and let AI inspire your next masterpiece.
+            <h1 className="font-handwritten text-6xl md:text-7xl text-foreground italic">
+              Story Idea Generator
+            </h1>
+            <p className="font-elegant italic text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Let us compose a tale most wondrous for thee...
             </p>
           </div>
 
-          {/* Selection Form */}
-          <Card className="border-2 shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-2xl">Craft Your Story</CardTitle>
-              <CardDescription className="text-base">
-                Choose the elements that will shape your narrative
+          {/* Vintage Parchment Form */}
+          <Card className="burnt-edges bg-gradient-to-br from-card to-accent shadow-2xl border-2 border-[hsl(25,30%,60%)]">
+            <CardHeader className="border-b border-border pb-6">
+              <CardTitle className="font-elegant text-3xl italic text-center">
+                Compose Thy Narrative
+              </CardTitle>
+              <CardDescription className="font-elegant text-center text-lg italic">
+                Select the elements to weave thy story
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Genre</label>
+            <CardContent className="pt-8 space-y-6">
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="space-y-3">
+                  <label className="font-elegant text-base font-semibold text-foreground italic">Genre</label>
                   <Select value={genre} onValueChange={setGenre}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select genre" />
+                    <SelectTrigger className="font-elegant italic bg-background/80 border-border">
+                      <SelectValue placeholder="Choose genre..." />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="font-elegant">
                       {genres.map((g) => (
-                        <SelectItem key={g} value={g}>{g}</SelectItem>
+                        <SelectItem key={g} value={g} className="italic">{g}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Theme</label>
+                <div className="space-y-3">
+                  <label className="font-elegant text-base font-semibold text-foreground italic">Theme</label>
                   <Select value={theme} onValueChange={setTheme}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select theme" />
+                    <SelectTrigger className="font-elegant italic bg-background/80 border-border">
+                      <SelectValue placeholder="Choose theme..." />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="font-elegant">
                       {themes.map((t) => (
-                        <SelectItem key={t} value={t}>{t}</SelectItem>
+                        <SelectItem key={t} value={t} className="italic">{t}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Character Type</label>
+                <div className="space-y-3">
+                  <label className="font-elegant text-base font-semibold text-foreground italic">Character Type</label>
                   <Select value={characterType} onValueChange={setCharacterType}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select character" />
+                    <SelectTrigger className="font-elegant italic bg-background/80 border-border">
+                      <SelectValue placeholder="Choose character..." />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="font-elegant">
                       {characterTypes.map((c) => (
-                        <SelectItem key={c} value={c}>{c}</SelectItem>
+                        <SelectItem key={c} value={c} className="italic">{c}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -145,17 +147,17 @@ const Index = () => {
               <Button 
                 onClick={handleGenerate} 
                 disabled={isLoading}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg py-6"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-elegant text-xl py-7 italic shadow-lg transition-all hover:shadow-xl"
                 size="lg"
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Generating Story Idea...
+                    <Loader2 className="mr-3 h-6 w-6 animate-spin" />
+                    Composing thy tale...
                   </>
                 ) : (
                   <>
-                    <Sparkles className="mr-2 h-5 w-5" />
+                    <Feather className="mr-3 h-5 w-5" />
                     Generate Story Idea
                   </>
                 )}
@@ -163,29 +165,32 @@ const Index = () => {
             </CardContent>
           </Card>
 
-          {/* Story Display */}
+          {/* Handwritten Story Response */}
           {storyIdea && (
-            <Card className="border-2 shadow-lg animate-fade-in bg-card">
-              <CardHeader>
-                <CardTitle className="text-2xl flex items-center gap-2">
-                  <Sparkles className="w-6 h-6 text-primary" />
-                  Your Story Idea
-                </CardTitle>
-                <CardDescription>
+            <Card className="burnt-edges bg-gradient-to-br from-card to-accent shadow-2xl border-2 border-[hsl(25,30%,60%)] animate-fade-in">
+              <CardHeader className="border-b border-border pb-6">
+                <div className="flex items-center justify-center gap-3 mb-2">
+                  <Feather className="w-7 h-7 text-primary" strokeWidth={1.5} />
+                  <CardTitle className="font-elegant text-3xl italic text-center">
+                    Thy Story Awaits
+                  </CardTitle>
+                </div>
+                <CardDescription className="font-elegant text-center text-base italic">
                   {genre} • {theme} • {characterType}
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="prose prose-lg max-w-none text-card-foreground">
-                  <p className="whitespace-pre-wrap leading-relaxed">{storyIdea}</p>
+              <CardContent className="pt-8">
+                <div className="handwritten text-xl md:text-2xl text-card-foreground leading-loose px-4 py-6 bg-background/30 rounded-lg border border-border/50">
+                  <p className="whitespace-pre-wrap">{storyIdea}</p>
                 </div>
-                <div className="mt-6 pt-6 border-t">
+                <div className="mt-8 pt-6 border-t border-border">
                   <Button 
                     onClick={handleGenerate}
                     variant="outline"
-                    className="w-full"
+                    className="w-full font-elegant text-lg italic border-2 hover:bg-accent"
                   >
-                    Generate Another Idea
+                    <Feather className="mr-2 h-5 w-5" />
+                    Compose Another Tale
                   </Button>
                 </div>
               </CardContent>
