@@ -20,21 +20,21 @@ serve(async (req) => {
 
     console.log('Generating story idea with:', { genre, theme, characterType });
 
-    const systemPrompt = `You are a creative writing prompt generator. Generate engaging, detailed story ideas that inspire writers. Each story idea should include:
-1. A compelling premise
-2. Potential conflict or challenge
-3. Character motivation hints
-4. Setting suggestions
-5. Possible plot twists or developments
+    const systemPrompt = `You are a creative storyteller. Write complete, original stories with a beginning, middle, and end. Each story should:
+1. Have unique, well-developed characters
+2. Include vivid descriptions and settings
+3. Build tension and conflict naturally
+4. Conclude with a satisfying ending
+5. Be engaging and imaginative
 
-Keep each story idea between 150-250 words. Be specific and imaginative.`;
+Write stories between 400-600 words. Use proper formatting with bold text (using <b></b> tags, NOT **) for emphasis where appropriate. Make every story completely unique and original.`;
 
-    const userPrompt = `Generate a creative story idea with these parameters:
+    const userPrompt = `Write a complete, original story with these parameters:
 Genre: ${genre}
 Theme: ${theme}
 Character Type: ${characterType}
 
-Create an engaging story premise that brings these elements together in an interesting way.`;
+Create a fully developed story with unique characters, an engaging plot, and a conclusive ending. Make it vivid and compelling.`;
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
