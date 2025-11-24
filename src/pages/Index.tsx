@@ -25,7 +25,7 @@ const Index = () => {
   const [genre, setGenre] = useState<string>("");
   const [theme, setTheme] = useState<string>("");
   const [characterType, setCharacterType] = useState<string>("");
-  const [storyIdea, setStoryIdea] = useState<string>("");
+  const [story, setStory] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -40,7 +40,7 @@ const Index = () => {
     }
 
     setIsLoading(true);
-    setStoryIdea("");
+    setStory("");
 
     try {
       const { data, error } = await supabase.functions.invoke('generate-story', {
@@ -55,16 +55,16 @@ const Index = () => {
         throw new Error(data.error);
       }
 
-      setStoryIdea(data.storyIdea);
+      setStory(data.storyIdea);
       toast({
-        title: "Story idea generated!",
-        description: "Your creative prompt is ready.",
+        title: "Story generated!",
+        description: "Your unique story is ready.",
       });
     } catch (error: any) {
       console.error('Error generating story:', error);
       toast({
         title: "Error",
-        description: error.message || "Failed to generate story idea. Please try again.",
+        description: error.message || "Failed to generate story. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -85,7 +85,7 @@ const Index = () => {
               Story Idea Generator
             </h1>
             <p className="font-elegant italic text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Let us compose a tale most wondrous for thee...
+              Let us weave a complete tale for thee...
             </p>
           </div>
 
@@ -153,12 +153,12 @@ const Index = () => {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-3 h-6 w-6 animate-spin" />
-                    Composing thy tale...
+                    Weaving thy story...
                   </>
                 ) : (
                   <>
                     <Feather className="mr-3 h-5 w-5" />
-                    Generate Story Idea
+                    Generate Complete Story
                   </>
                 )}
               </Button>
@@ -166,13 +166,13 @@ const Index = () => {
           </Card>
 
           {/* Handwritten Story Response */}
-          {storyIdea && (
+          {story && (
             <Card className="burnt-edges bg-gradient-to-br from-card to-accent shadow-2xl border-2 border-[hsl(25,30%,60%)] animate-fade-in">
               <CardHeader className="border-b border-border pb-6">
                 <div className="flex items-center justify-center gap-3 mb-2">
                   <Feather className="w-7 h-7 text-primary" strokeWidth={1.5} />
                   <CardTitle className="font-elegant text-3xl italic text-center">
-                    Thy Story Awaits
+                    Thy Story
                   </CardTitle>
                 </div>
                 <CardDescription className="font-elegant text-center text-base italic">
@@ -180,9 +180,10 @@ const Index = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-8">
-                <div className="handwritten text-xl md:text-2xl text-card-foreground leading-loose px-4 py-6 bg-background/30 rounded-lg border border-border/50">
-                  <p className="whitespace-pre-wrap">{storyIdea}</p>
-                </div>
+                <div 
+                  className="handwritten text-xl md:text-2xl text-card-foreground leading-loose px-4 py-6 bg-background/30 rounded-lg border border-border/50"
+                  dangerouslySetInnerHTML={{ __html: story }}
+                />
                 <div className="mt-8 pt-6 border-t border-border">
                   <Button 
                     onClick={handleGenerate}
@@ -190,7 +191,7 @@ const Index = () => {
                     className="w-full font-elegant text-lg italic border-2 hover:bg-accent"
                   >
                     <Feather className="mr-2 h-5 w-5" />
-                    Compose Another Tale
+                    Weave Another Tale
                   </Button>
                 </div>
               </CardContent>
