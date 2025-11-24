@@ -8,98 +8,91 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Warm literary palette */
-    --background: 38 32% 96%;
-    --foreground: 20 14% 20%;
+    /* Vintage coffee & parchment palette */
+    --background: 30 25% 88%;
+    --foreground: 25 35% 25%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 20 14% 20%;
+    --card: 35 40% 92%;
+    --card-foreground: 25 35% 25%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 14% 20%;
+    --popover: 35 40% 92%;
+    --popover-foreground: 25 35% 25%;
 
-    /* Burnt orange primary */
-    --primary: 18 80% 50%;
-    --primary-foreground: 38 32% 96%;
+    /* Rich coffee brown primary */
+    --primary: 25 35% 35%;
+    --primary-foreground: 35 40% 92%;
 
-    /* Deep teal secondary */
-    --secondary: 178 40% 30%;
-    --secondary-foreground: 38 32% 96%;
+    /* Deep espresso secondary */
+    --secondary: 20 30% 30%;
+    --secondary-foreground: 35 40% 92%;
 
-    /* Muted warm tones */
-    --muted: 38 20% 88%;
-    --muted-foreground: 20 14% 45%;
+    /* Aged paper muted */
+    --muted: 35 30% 85%;
+    --muted-foreground: 25 25% 45%;
 
-    /* Warm cream accent */
-    --accent: 38 45% 92%;
-    --accent-foreground: 20 14% 20%;
+    /* Cream accent */
+    --accent: 40 45% 90%;
+    --accent-foreground: 25 35% 25%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 38 32% 96%;
+    --destructive: 0 60% 45%;
+    --destructive-foreground: 35 40% 92%;
 
-    --border: 38 20% 88%;
-    --input: 38 20% 88%;
-    --ring: 18 80% 50%;
+    --border: 30 20% 75%;
+    --input: 35 30% 88%;
+    --ring: 25 35% 35%;
 
-    --radius: 0.75rem;
+    --radius: 0.25rem;
     
-    /* Custom gradient */
-    --gradient-warm: linear-gradient(135deg, hsl(18 80% 50%), hsl(20 70% 45%));
-    --gradient-subtle: linear-gradient(180deg, hsl(38 32% 96%), hsl(38 25% 92%));
+    /* Custom vintage gradients */
+    --gradient-coffee: linear-gradient(135deg, hsl(25 35% 45%), hsl(20 30% 35%));
+    --gradient-parchment: linear-gradient(180deg, hsl(35 40% 92%), hsl(30 35% 88%));
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 35 40% 92%;
+    --sidebar-foreground: 25 35% 25%;
+    --sidebar-primary: 25 35% 35%;
+    --sidebar-primary-foreground: 35 40% 92%;
+    --sidebar-accent: 40 35% 88%;
+    --sidebar-accent-foreground: 25 35% 25%;
+    --sidebar-border: 30 20% 75%;
+    --sidebar-ring: 25 35% 35%;
   }
 
   .dark {
-    --background: 20 14% 12%;
-    --foreground: 38 32% 96%;
+    --background: 25 20% 18%;
+    --foreground: 35 40% 92%;
 
-    --card: 20 14% 16%;
-    --card-foreground: 38 32% 96%;
+    --card: 25 25% 22%;
+    --card-foreground: 35 40% 92%;
 
-    --popover: 20 14% 16%;
-    --popover-foreground: 38 32% 96%;
+    --popover: 25 25% 22%;
+    --popover-foreground: 35 40% 92%;
 
-    --primary: 18 80% 50%;
-    --primary-foreground: 38 32% 96%;
+    --primary: 25 35% 45%;
+    --primary-foreground: 35 40% 92%;
 
-    --secondary: 178 40% 25%;
-    --secondary-foreground: 38 32% 96%;
+    --secondary: 20 30% 35%;
+    --secondary-foreground: 35 40% 92%;
 
-    --muted: 20 14% 20%;
-    --muted-foreground: 38 15% 65%;
+    --muted: 25 20% 25%;
+    --muted-foreground: 35 25% 65%;
 
-    --accent: 20 14% 20%;
-    --accent-foreground: 38 32% 96%;
+    --accent: 25 20% 25%;
+    --accent-foreground: 35 40% 92%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 38 32% 96%;
+    --destructive: 0 60% 40%;
+    --destructive-foreground: 35 40% 92%;
 
-    --border: 20 14% 20%;
-    --input: 20 14% 20%;
-    --ring: 18 80% 50%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 25 15% 30%;
+    --input: 25 20% 25%;
+    --ring: 25 35% 45%;
+    --sidebar-background: 25 20% 18%;
+    --sidebar-foreground: 35 40% 92%;
+    --sidebar-primary: 25 35% 45%;
+    --sidebar-primary-foreground: 35 40% 92%;
+    --sidebar-accent: 25 20% 25%;
+    --sidebar-accent-foreground: 35 40% 92%;
+    --sidebar-border: 25 15% 30%;
+    --sidebar-ring: 25 35% 45%;
   }
 }
 
@@ -110,6 +103,7 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Playfair Display', serif;
   }
   
   @keyframes fade-in {
@@ -125,5 +119,36 @@ All colors MUST be HSL.
   
   .animate-fade-in {
     animation: fade-in 0.6s ease-out;
+  }
+  
+  /* Burnt edges effect */
+  .burnt-edges {
+    position: relative;
+    box-shadow: 
+      inset 0 0 20px rgba(139, 69, 19, 0.3),
+      0 0 10px rgba(139, 69, 19, 0.2);
+    border: 1px solid hsl(25 30% 60%);
+  }
+  
+  .burnt-edges::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    background: linear-gradient(45deg, 
+      transparent 0%, 
+      rgba(101, 67, 33, 0.4) 10%, 
+      transparent 20%,
+      transparent 80%,
+      rgba(101, 67, 33, 0.4) 90%,
+      transparent 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  /* Handwritten text style */
+  .handwritten {
+    font-family: 'Dancing Script', cursive;
+    font-style: italic;
+    line-height: 1.8;
   }
 }
