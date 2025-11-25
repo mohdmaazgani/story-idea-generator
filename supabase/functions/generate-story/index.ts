@@ -11,14 +11,83 @@ serve(async (req) => {
   }
 
   try {
-    const { genre, theme, characterType } = await req.json();
+    const { genre, theme, characterType, characterName, characterDetails, customPrompt, mode, keywords } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     
     if (!LOVABLE_API_KEY) {
       throw new Error('LOVABLE_API_KEY is not configured');
     }
 
-    console.log('Generating story idea with:', { genre, theme, characterType });
+    // Mode: 'prompt' for generating prompts, 'story' for generating stories
+    if (mode === 'prompt') {
+      console.log('Generating story prompt from keywords:', keywords);
+      
+      const systemPrompt = `You are a creative writing assistant specializing in generating compelling story prompts. Create detailed, inspiring story prompts that spark imagination. Each prompt should be vivid, specific, and give clear direction while leaving room for creativity.`;
+      
+      const userPrompt = `Generate an impressive, detailed story writing prompt based on these keywords: "${keywords}"
+
+Create a compelling prompt that includes:
+- An intriguing premise or situation
+- Potential character dynamics
+- Atmospheric setting suggestions
+- A hook or conflict to explore
+
+Make it inspiring and specific enough to guide the writer, but open enough for creative interpretation. Keep it between 100-150 words.`;
+
+      const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'google/gemini-2.5-flash',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+          ],
+        }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          return new Response(
+            JSON.stringify({ error: 'Rate limit exceeded. Please try again in a moment.' }), 
+            {
+              status: 429,
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            }
+          );
+        }
+        if (response.status === 402) {
+          return new Response(
+            JSON.stringify({ error: 'Payment required. Please add credits to continue.' }), 
+            {
+              status: 402,
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            }
+          );
+        }
+        const errorText = await response.text();
+        console.error('AI gateway error:', response.status, errorText);
+        throw new Error(`AI gateway error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const prompt = data.choices[0].message.content;
+
+      console.log('Successfully generated story prompt');
+
+      return new Response(
+        JSON.stringify({ prompt }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    // Story generation mode
+    console.log('Generating story with:', { genre, theme, characterType, characterName, characterDetails, customPrompt });
 
     const systemPrompt = `You are a creative storyteller. Write complete, original stories with a beginning, middle, and end. Each story should:
 1. Have unique, well-developed characters
@@ -29,12 +98,24 @@ serve(async (req) => {
 
 Write stories between 400-600 words. Use proper formatting with bold text (using <b></b> tags, NOT **) for emphasis where appropriate. Make every story completely unique and original.`;
 
-    const userPrompt = `Write a complete, original story with these parameters:
+    let userPrompt = `Write a complete, original story with these parameters:
 Genre: ${genre}
 Theme: ${theme}
-Character Type: ${characterType}
+Character Type: ${characterType}`;
 
-Create a fully developed story with unique characters, an engaging plot, and a conclusive ending. Make it vivid and compelling.`;
+    if (characterName) {
+      userPrompt += `\nCharacter Name: ${characterName}`;
+    }
+
+    if (characterDetails) {
+      userPrompt += `\nCharacter Details: ${characterDetails}`;
+    }
+
+    if (customPrompt) {
+      userPrompt += `\n\nAdditional Story Direction: ${customPrompt}`;
+    }
+
+    userPrompt += `\n\nCreate a fully developed story with unique characters, an engaging plot, and a conclusive ending. Make it vivid and compelling.`;
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',

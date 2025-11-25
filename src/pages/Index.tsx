@@ -25,8 +25,14 @@ const Index = () => {
   const [genre, setGenre] = useState<string>("");
   const [theme, setTheme] = useState<string>("");
   const [characterType, setCharacterType] = useState<string>("");
+  const [characterName, setCharacterName] = useState<string>("");
+  const [characterDetails, setCharacterDetails] = useState<string>("");
+  const [customPrompt, setCustomPrompt] = useState<string>("");
+  const [keywords, setKeywords] = useState<string>("");
+  const [generatedPrompt, setGeneratedPrompt] = useState<string>("");
   const [story, setStory] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false);
   const { toast } = useToast();
 
   const handleGenerate = async () => {
@@ -44,7 +50,15 @@ const Index = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke('generate-story', {
-        body: { genre, theme, characterType }
+        body: { 
+          genre, 
+          theme, 
+          characterType, 
+          characterName, 
+          characterDetails, 
+          customPrompt,
+          mode: 'story'
+        }
       });
 
       if (error) {
@@ -69,6 +83,53 @@ const Index = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleGeneratePrompt = async () => {
+    if (!keywords.trim()) {
+      toast({
+        title: "Missing keywords",
+        description: "Please enter some keywords to generate a prompt.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsGeneratingPrompt(true);
+    setGeneratedPrompt("");
+
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-story', {
+        body: { 
+          keywords,
+          mode: 'prompt'
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data?.error) {
+        throw new Error(data.error);
+      }
+
+      setGeneratedPrompt(data.prompt);
+      setCustomPrompt(data.prompt); // Auto-fill the custom prompt field
+      toast({
+        title: "Prompt generated!",
+        description: "Your story prompt is ready.",
+      });
+    } catch (error: any) {
+      console.error('Error generating prompt:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to generate prompt. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingPrompt(false);
     }
   };
 
@@ -144,7 +205,70 @@ const Index = () => {
                 </div>
               </div>
 
-              <Button 
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <label className="font-elegant text-base font-semibold text-foreground italic">Character Name (Optional)</label>
+                  <input
+                    type="text"
+                    value={characterName}
+                    onChange={(e) => setCharacterName(e.target.value)}
+                    placeholder="e.g., Eleanor, Marcus..."
+                    className="w-full px-4 py-2 rounded-md border border-border bg-background/80 font-elegant italic text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <label className="font-elegant text-base font-semibold text-foreground italic">Character Details (Optional)</label>
+                  <input
+                    type="text"
+                    value={characterDetails}
+                    onChange={(e) => setCharacterDetails(e.target.value)}
+                    placeholder="e.g., age, profession, traits..."
+                    className="w-full px-4 py-2 rounded-md border border-border bg-background/80 font-elegant italic text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-3 pt-4 border-t border-border">
+                <label className="font-elegant text-base font-semibold text-foreground italic">Generate Story Prompt from Keywords</label>
+                <div className="flex gap-3">
+                  <input
+                    type="text"
+                    value={keywords}
+                    onChange={(e) => setKeywords(e.target.value)}
+                    placeholder="Enter keywords (e.g., 'abandoned lighthouse, mysterious letter')"
+                    className="flex-1 px-4 py-2 rounded-md border border-border bg-background/80 font-elegant italic text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  <Button
+                    onClick={handleGeneratePrompt}
+                    disabled={isGeneratingPrompt}
+                    variant="outline"
+                    className="font-elegant italic border-2"
+                  >
+                    {isGeneratingPrompt ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      'Generate Prompt'
+                    )}
+                  </Button>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <label className="font-elegant text-base font-semibold text-foreground italic">Custom Story Direction (Optional)</label>
+                <textarea
+                  value={customPrompt}
+                  onChange={(e) => setCustomPrompt(e.target.value)}
+                  placeholder="Add your own ideas to enhance the story..."
+                  rows={4}
+                  className="w-full px-4 py-3 rounded-md border border-border bg-background/80 font-elegant italic text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                />
+              </div>
+
+              <Button
                 onClick={handleGenerate} 
                 disabled={isLoading}
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-elegant text-xl py-7 italic shadow-lg transition-all hover:shadow-xl"
