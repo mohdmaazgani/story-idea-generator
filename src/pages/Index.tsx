@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Feather } from "lucide-react";
+import { Loader2, Feather, Heart, LogOut, BookMarked } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const genres = [
   "Fantasy", "Science Fiction", "Mystery", "Romance", "Horror",
@@ -33,7 +35,10 @@ const Index = () => {
   const [story, setStory] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const handleGenerate = async () => {
     if (!genre || !theme || !characterType) {
@@ -133,10 +138,103 @@ const Index = () => {
     }
   };
 
+  const handleSaveStory = async () => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to save stories.",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    if (!story || !genre || !theme || !characterType) {
+      toast({
+        title: "No story to save",
+        description: "Please generate a story first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      const title = `${genre} - ${theme}`;
+      
+      const { error } = await supabase
+        .from("saved_stories")
+        .insert({
+          user_id: user.id,
+          title,
+          content: story,
+          genre,
+          theme,
+          character_type: characterType,
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Story saved!",
+        description: "Thy tale has been added to thy collection.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to save story.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast({
+      title: "Signed out",
+      description: "Farewell, dear writer.",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(30,25%,88%)] via-[hsl(35,30%,85%)] to-[hsl(25,30%,82%)] py-8 px-4">
       <div className="container mx-auto max-w-4xl">
         <div className="space-y-8">
+          {/* Auth buttons */}
+          <div className="flex justify-end gap-3">
+            {user ? (
+              <>
+                <Button
+                  onClick={() => navigate("/saved-stories")}
+                  variant="outline"
+                  className="font-elegant italic border-2"
+                >
+                  <BookMarked className="mr-2 h-4 w-4" />
+                  My Stories
+                </Button>
+                <Button
+                  onClick={handleSignOut}
+                  variant="outline"
+                  className="font-elegant italic border-2"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={() => navigate("/auth")}
+                variant="outline"
+                className="font-elegant italic border-2"
+              >
+                Sign In
+              </Button>
+            )}
+          </div>
+
           {/* Vintage Letter Header */}
           <div className="text-center space-y-6 animate-fade-in">
             <div className="flex items-center justify-center gap-3 mb-4">
@@ -308,7 +406,24 @@ const Index = () => {
                   className="handwritten text-xl md:text-2xl text-card-foreground leading-loose px-4 py-6 bg-background/30 rounded-lg border border-border/50"
                   dangerouslySetInnerHTML={{ __html: story }}
                 />
-                <div className="mt-8 pt-6 border-t border-border">
+                <div className="mt-8 pt-6 border-t border-border space-y-4">
+                  <Button 
+                    onClick={handleSaveStory}
+                    disabled={isSaving}
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-elegant text-lg italic"
+                  >
+                    {isSaving ? (
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Heart className="mr-2 h-5 w-5" />
+                        Save to Collection
+                      </>
+                    )}
+                  </Button>
                   <Button 
                     onClick={handleGenerate}
                     variant="outline"
