@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      generated_stories: {
+        Row: {
+          character_type: string | null
+          created_at: string
+          genre: string | null
+          id: string
+          story_content: string
+          theme: string | null
+          title: string | null
+          user_email: string | null
+          user_id: string | null
+        }
+        Insert: {
+          character_type?: string | null
+          created_at?: string
+          genre?: string | null
+          id?: string
+          story_content: string
+          theme?: string | null
+          title?: string | null
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          character_type?: string | null
+          created_at?: string
+          genre?: string | null
+          id?: string
+          story_content?: string
+          theme?: string | null
+          title?: string | null
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
