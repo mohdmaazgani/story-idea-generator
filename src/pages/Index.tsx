@@ -75,6 +75,45 @@ const Index = () => {
       }
 
       setStory(data.storyIdea);
+      
+      // Save story and send email notification
+      const title = `${genre} - ${theme}`;
+      const userEmail = user?.email || null;
+      
+      // Save to database
+      const { error: dbError } = await supabase
+        .from("generated_stories")
+        .insert({
+          user_id: user?.id || null,
+          user_email: userEmail,
+          title,
+          story_content: data.storyIdea,
+          genre,
+          theme,
+          character_type: characterType,
+        });
+      
+      if (dbError) {
+        console.error("Error saving story to database:", dbError);
+      }
+      
+      // Send email notification
+      try {
+        await supabase.functions.invoke('send-story-email', {
+          body: {
+            storyContent: data.storyIdea,
+            genre,
+            theme,
+            characterType,
+            title,
+            userEmail,
+            userName: user?.email?.split('@')[0] || 'Anonymous',
+          }
+        });
+      } catch (emailError) {
+        console.error("Error sending email:", emailError);
+      }
+      
       toast({
         title: "Story generated!",
         description: "Your unique story is ready.",
