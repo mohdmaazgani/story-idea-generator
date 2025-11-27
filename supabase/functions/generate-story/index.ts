@@ -25,9 +25,10 @@ serve(async (req) => {
       const systemPrompt = `You are a creative writing assistant specializing in generating compelling story prompts. Create detailed, inspiring story prompts that spark imagination. Each prompt should be vivid, specific, and give clear direction while leaving room for creativity.
 
 CRITICAL FORMATTING RULES:
-- NEVER use asterisks (*) for any formatting
-- Use HTML tags for text formatting: <b></b> for bold, <i></i> for italic, <u></u> for underline
-- Apply rich formatting for emphasis and style`;
+- Output PLAIN TEXT ONLY - no HTML tags, no markdown, no formatting
+- Do NOT use any tags like <b>, <i>, <u>, <p>, or any other HTML/XML tags
+- Use natural text emphasis through word choice and punctuation only
+- Keep the output as clean, readable plain text`;
       
       const userPrompt = `Generate an impressive, detailed story writing prompt based on these keywords: "${keywords}"
 
