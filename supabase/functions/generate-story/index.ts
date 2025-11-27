@@ -22,7 +22,12 @@ serve(async (req) => {
     if (mode === 'prompt') {
       console.log('Generating story prompt from keywords:', keywords);
       
-      const systemPrompt = `You are a creative writing assistant specializing in generating compelling story prompts. Create detailed, inspiring story prompts that spark imagination. Each prompt should be vivid, specific, and give clear direction while leaving room for creativity.`;
+      const systemPrompt = `You are a creative writing assistant specializing in generating compelling story prompts. Create detailed, inspiring story prompts that spark imagination. Each prompt should be vivid, specific, and give clear direction while leaving room for creativity.
+
+CRITICAL FORMATTING RULES:
+- NEVER use asterisks (*) for any formatting
+- Use HTML tags for text formatting: <b></b> for bold, <i></i> for italic, <u></u> for underline
+- Apply rich formatting for emphasis and style`;
       
       const userPrompt = `Generate an impressive, detailed story writing prompt based on these keywords: "${keywords}"
 
@@ -96,7 +101,13 @@ Make it inspiring and specific enough to guide the writer, but open enough for c
 4. Conclude with a satisfying ending
 5. Be engaging and imaginative
 
-Write stories between 400-600 words. Use proper formatting with bold text (using <b></b> tags, NOT **) for emphasis where appropriate. Make every story completely unique and original.`;
+Write stories between 400-600 words. 
+
+CRITICAL FORMATTING RULES:
+- NEVER use asterisks (*) for any formatting whatsoever
+- Use HTML tags for text formatting: <b></b> for bold, <i></i> for italic, <u></u> for underline
+- Apply rich formatting throughout the story for emphasis and style
+- Make every story completely unique and original`;
 
     let userPrompt = `Write a complete, original story with these parameters:
 Genre: ${genre}
