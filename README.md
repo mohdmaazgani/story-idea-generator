@@ -6,6 +6,10 @@ Whether you're writing a short story, novel, script, or just exploring imaginati
 
  **Website link** — https://story-idea-generator.netlify.app/
 
+
+ 
+<p align="center"> <img src="https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react" /> <img src="https://img.shields.io/badge/Vite-Build%20Tool-purple?style=for-the-badge&logo=vite" /> <img src="https://img.shields.io/badge/TypeScript-Language-3178C6?style=for-the-badge&logo=typescript" /> <img src="https://img.shields.io/badge/Supabase-Backend-green?style=for-the-badge&logo=supabase" /> <img src="https://img.shields.io/badge/TailwindCSS-Styling-38B2AC?style=for-the-badge&logo=tailwindcss" /> <img src="https://img.shields.io/badge/Netlify-Hosting-teal?style=for-the-badge&logo=netlify" /> <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" /> </p>
+
 ## 🌟 Features
 
 ## ✨ Instant Story Ideas
@@ -35,8 +39,8 @@ Whether you're writing a short story, novel, script, or just exploring imaginati
 ## ⚙️ Tech Stack
 
 | Category            | Technologies                             |
-| ------------------- | ---------------------------------------- |
-| **Frontend**        | React + Vite                             |
+| ------------------- | -----------------------------------------|
+| **Frontend**        | React + Vite + Typescript                |
 | **Styling**         | Tailwind CSS (if used)                   |
 | **Backend / API**   | Supabase (for storing generated prompts) |
 | **Deployment**      | Netlify                                  |
